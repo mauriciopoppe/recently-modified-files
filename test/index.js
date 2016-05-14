@@ -4,7 +4,6 @@ import test from 'ava'
 import fs from 'fs-extra'
 import touch from 'touch'
 import path from 'path'
-import Promise from 'bluebird'
 
 import mrf, { sync, promise } from '../src/index.js'
 

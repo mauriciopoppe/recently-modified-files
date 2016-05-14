@@ -5,7 +5,7 @@
 [![Codecov Status][codecov-image]][codecov-url]
 [![Standard][standard-image]][standard-url]
 
-> Gets a list of recently modified files
+> Gets a list of recently modified files in a dir
 
 ## Install
 

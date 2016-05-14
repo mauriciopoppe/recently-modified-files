@@ -1,7 +1,7 @@
 {
   "name": "recently-modified-files",
   "version": "0.1.0",
-  "description": "Gets the most recent modified file on a given path",
+  "description": "Gets the most recent modified file on a dir",
   "license": "MIT",
   "author": {
     "name": "Mauricio Poppe",

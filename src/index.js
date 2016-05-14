@@ -29,9 +29,8 @@ export function sync (dir) {
 export function promise (dir) {
   return new Promise((resolve, reject) => {
     asynch(dir, (err, files) => {
-      if (err) reject(err) 
+      if (err) reject(err)
       else resolve(files)
     })
-  }) 
+  })
 }
-
