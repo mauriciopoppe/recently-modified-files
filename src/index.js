@@ -13,7 +13,7 @@ function fmr (stats, files) {
   return onlyFiles.map(stat => stat.filename)
 }
 
-export default (dir, cb) => {
+export default function asynch (dir, cb) {
   stat(dir, (err, stats, files) => {
     if (err) return cb(err)
     return cb(null, fmr(stats, files))
@@ -25,3 +25,13 @@ export function sync (dir) {
   var stats = files.map(file => fs.statSync(path.join(dir, file)))
   return fmr(stats, files)
 }
+
+export function promise (dir) {
+  return new Promise((resolve, reject) => {
+    asynch(dir, (err, files) => {
+      if (err) reject(err) 
+      else resolve(files)
+    })
+  }) 
+}
+

@@ -19,24 +19,34 @@ npm install --save recently-modified-files
 import rmf from 'recently-modified-files'
 ```
 
-### `rmf(path, fn)`
+### `rmf(dir, fn)`
 
 **params**
 
-- `path` {string} The path to test for files
+- `dir` {string} The dir to test for files
 - `fn` {Function} Callback, the arguments are
   - `err` {Error} Possible exception or null
   - `files` {Array} An array with the names of the files where the first one is the most recently modified file or an empty array when there are no files
 
-### `const filenames = rmf.sync(path)`
+### `const filenames = rmf.sync(dir)`
 
 **params**
 
-- `path` {string} The path to test for files
+- `dir` {string} The path to test for files
 
 **return**
 
 An array of strings with the filenames on `path` in descending order with respect to the modified time
+
+### `rmf.promise(dir)`
+
+**params**
+
+- `dir` {string} The path to test for files
+
+**return**
+
+A native promise, note that it's required that `global.Promise` is defined
 
 **NOTE: the test to check if a file is a file is by calling `stat.isFile()` which means that folders/symlinks are ignored** 
 
