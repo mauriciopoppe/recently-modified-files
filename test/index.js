@@ -1,7 +1,9 @@
 'use strict'
 
-import mostRecentFile from '../src/index.js'
 import test from 'ava'
+import fs from 'fs'
+
+import mostRecentFile from '../src/index.js'
 
 test.cb('on a nonexistant folder', t => {
   t.plan(1)
@@ -12,11 +14,19 @@ test.cb('on a nonexistant folder', t => {
 })
 
 test.cb('on an empty folder', t => {
-  t.plan(2)
-  mostRecentFile('./fixtures/empty/', (err, file) => {
-    t.falsy(err)
-    t.is(file, null)
-    t.end()
+  t.plan(3)
+  const folder = './fixtures/empty'
+  fs.mkdir(folder, (err) => {
+    if (err) t.end()
+    mostRecentFile(folder, (err, file) => {
+      t.falsy(err)
+      t.is(file, null)
+      fs.rmdir(folder, (err) => {
+        if (err) t.end()
+        t.pass()
+        t.end()
+      })
+    })
   })
 })
 

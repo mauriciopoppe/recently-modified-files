@@ -22,8 +22,17 @@ mostRecentFile(path, fn)
 
 - `path` {string} The path to test for files
 - `fn` {Function} Callback, the arguments are
-  - `err` {Error} Error object if there was a problem while getting the stats, `null` otherwise
-  - `file` {string|null} A string with the filename of the most recent file, `null` when there are no files in the given path
+  - `err` {Error} Possible exception or null
+  - `file` {string|null} The filename of the most recent file, `null` when there are no files in the given path
+
+Example
+
+```js
+// see the following folder on this project `test` folder
+mostRecentFile('./test/fixtures/files/', (err, file) {
+  console.log(file) // c
+})
+```
 
 ## License
 
