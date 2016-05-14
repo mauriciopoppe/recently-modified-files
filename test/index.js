@@ -1,58 +1,70 @@
 'use strict'
 
 import test from 'ava'
-import fs from 'fs'
+import fs from 'fs-extra'
+import touch from 'touch'
+import path from 'path'
 
-import mostRecentFile from '../src/index.js'
+import mrf, {sync} from '../src/index.js'
 
 test.cb('on a nonexistant folder', t => {
   t.plan(1)
-  mostRecentFile('./fixtures/i-dont-exist/', (err, file) => {
+  mrf('./i-dont-exist/', (err, files) => {
     t.truthy(err)
     t.end()
   })
 })
 
 test.cb('on an empty folder', t => {
-  t.plan(3)
-  const folder = './fixtures/empty'
-  fs.mkdir(folder, (err) => {
-    if (err) t.end()
-    mostRecentFile(folder, (err, file) => {
-      t.falsy(err)
-      t.is(file, null)
-      fs.rmdir(folder, (err) => {
-        if (err) t.end()
-        t.pass()
-        t.end()
-      })
-    })
+  t.plan(2)
+  const folder = './empty/'
+  fs.mkdirsSync(folder)
+  mrf(folder, (err, files) => {
+    t.falsy(err)
+    t.deepEqual(files, [])
+    fs.removeSync(folder)
+    t.end()
   })
 })
 
 test.cb('on a folder with multiple files', t => {
   t.plan(1)
-  mostRecentFile('./fixtures/files/', (err, file) => {
+  const folder = './files/'
+  fs.mkdirsSync(folder)
+  touch.sync( path.join(folder, 'a'), { mtime: new Date('2016-04-13') })
+  touch.sync( path.join(folder, 'b'), { mtime: new Date() })
+  touch.sync( path.join(folder, 'c'), { mtime: new Date('2016-04-10') })
+  mrf(folder, (err, files) => {
     if (err) t.end()
-    t.is(file, 'c')
-    t.end()
-  })
-})
-
-test.cb('on a folder with multiple files excluding symlinks', t => {
-  t.plan(1)
-  mostRecentFile('./fixtures/with-symlinks/', (err, file) => {
-    if (err) t.end()
-    t.is(file, 'c')
+    t.deepEqual(files, ['b', 'a', 'c'])
+    fs.removeSync(folder)
     t.end()
   })
 })
 
 test.cb('on a folder that only has folders', t => {
   t.plan(1)
-  mostRecentFile('./fixtures/', (err, file) => {
+  const folder = './only-folders/' 
+  fs.mkdirsSync(folder + 'a') 
+  fs.mkdirsSync(folder + 'b') 
+  mrf(folder, (err, files) => {
     if (err) t.end()
-    t.is(file, null)
+    t.deepEqual(files, [])
+    fs.removeSync(folder)
     t.end()
   })
 })
+
+// sync
+
+test('sync on a folder with multiple files', t => {
+  const folder = './files-sync/'
+  fs.mkdirsSync(folder)
+  touch.sync(folder + 'a', { mtime: new Date('2016-04-13') })
+  touch.sync(folder + 'b', { mtime: new Date() })
+  touch.sync(folder + 'c', { mtime: new Date('2016-04-10') })
+  const files = sync(folder)
+  t.deepEqual(files, ['b', 'a', 'c'])
+  fs.removeSync(folder)
+})
+

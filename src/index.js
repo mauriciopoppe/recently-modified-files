@@ -1,21 +1,30 @@
+import fs from 'fs'
+import path from 'path'
 import stat from 'folder-stat'
 
-export default (path, cb) => {
-  stat(path, (err, stats, files) => {
-    if (err) return cb(err)
-    let best = null
-    let bestIndex = -1
-    stats.forEach((stat, i) => {
-      if (stat.isFile()) {
-        if (!best || stat.mtime > best.mtime) {
-          best = stat
-          bestIndex = i
-        }
-      }
+function fmr(stats, files) {
+  let best = null
+  let bestIndex = -1
+  var files = stats
+    .map((stat, i) => {
+      stat.filename = files[i]
+      return stat
     })
-    // no files
-    if (bestIndex === -1) return cb(null, null)
-    return cb(null, files[bestIndex])
+    .filter(stat => stat.isFile())
+  files.sort((a, b) => b.mtime - a.mtime)
+  return files.map(stat => stat.filename)
+}
+
+export default (dir, cb) => {
+  stat(dir, (err, stats, files) => {
+    if (err) return cb(err)
+    return cb(null, fmr(stats, files))
   })
+}
+
+export function sync(dir) { 
+  var files = fs.readdirSync(dir)
+  var stats = files.map( file => { return fs.statSync(path.join(dir, file)) } )
+  return fmr(stats, files)
 }
 
