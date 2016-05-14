@@ -5,7 +5,7 @@ import fs from 'fs-extra'
 import touch from 'touch'
 import path from 'path'
 
-import mrf, {sync} from '../src/index.js'
+import mrf, { sync } from '../src/index.js'
 
 test.cb('on a nonexistant folder', t => {
   t.plan(1)
@@ -31,9 +31,9 @@ test.cb('on a folder with multiple files', t => {
   t.plan(1)
   const folder = './files/'
   fs.mkdirsSync(folder)
-  touch.sync( path.join(folder, 'a'), { mtime: new Date('2016-04-13') })
-  touch.sync( path.join(folder, 'b'), { mtime: new Date() })
-  touch.sync( path.join(folder, 'c'), { mtime: new Date('2016-04-10') })
+  touch.sync(path.join(folder, 'a'), { mtime: new Date('2016-04-13') })
+  touch.sync(path.join(folder, 'b'), { mtime: new Date() })
+  touch.sync(path.join(folder, 'c'), { mtime: new Date('2016-04-10') })
   mrf(folder, (err, files) => {
     if (err) t.end()
     t.deepEqual(files, ['b', 'a', 'c'])
@@ -44,9 +44,9 @@ test.cb('on a folder with multiple files', t => {
 
 test.cb('on a folder that only has folders', t => {
   t.plan(1)
-  const folder = './only-folders/' 
-  fs.mkdirsSync(folder + 'a') 
-  fs.mkdirsSync(folder + 'b') 
+  const folder = './only-folders/'
+  fs.mkdirsSync(folder + 'a')
+  fs.mkdirsSync(folder + 'b')
   mrf(folder, (err, files) => {
     if (err) t.end()
     t.deepEqual(files, [])
@@ -67,4 +67,3 @@ test('sync on a folder with multiple files', t => {
   t.deepEqual(files, ['b', 'a', 'c'])
   fs.removeSync(folder)
 })
-

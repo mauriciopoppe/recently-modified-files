@@ -2,17 +2,15 @@ import fs from 'fs'
 import path from 'path'
 import stat from 'folder-stat'
 
-function fmr(stats, files) {
-  let best = null
-  let bestIndex = -1
-  var files = stats
+function fmr (stats, files) {
+  var onlyFiles = stats
     .map((stat, i) => {
       stat.filename = files[i]
       return stat
     })
     .filter(stat => stat.isFile())
-  files.sort((a, b) => b.mtime - a.mtime)
-  return files.map(stat => stat.filename)
+  onlyFiles.sort((a, b) => b.mtime - a.mtime)
+  return onlyFiles.map(stat => stat.filename)
 }
 
 export default (dir, cb) => {
@@ -22,9 +20,8 @@ export default (dir, cb) => {
   })
 }
 
-export function sync(dir) { 
+export function sync (dir) {
   var files = fs.readdirSync(dir)
-  var stats = files.map( file => { return fs.statSync(path.join(dir, file)) } )
+  var stats = files.map(file => fs.statSync(path.join(dir, file)))
   return fmr(stats, files)
 }
-

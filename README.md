@@ -21,16 +21,22 @@ import rmf from 'recently-modified-files'
 
 ### `rmf(path, fn)`
 
+**params**
+
 - `path` {string} The path to test for files
 - `fn` {Function} Callback, the arguments are
   - `err` {Error} Possible exception or null
   - `files` {Array} An array with the names of the files where the first one is the most recently modified file or an empty array when there are no files
 
-### `rmf.sync(path)`
+### `const filenames = rmf.sync(path)`
 
-Sync version
+**params**
 
 - `path` {string} The path to test for files
+
+**return**
+
+An array of strings with the filenames on `path` in descending order with respect to the modified time
 
 **NOTE: the test to check if a file is a file is by calling `stat.isFile()` which means that folders/symlinks are ignored** 
 
