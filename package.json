@@ -4,9 +4,7 @@
   "description": "Gets the most recent modified file on a dir",
   "license": "MIT",
   "author": {
-    "name": "Mauricio Poppe",
-    "email": "mauricio.poppe@gmail.com",
-    "url": "http://maurizzzio.com"
+    "name": "Mauricio Poppe"
   },
   "main": "dist/index.js",
   "jsnext:main": "src/index.js",
