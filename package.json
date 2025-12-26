@@ -3,9 +3,7 @@
   "version": "0.1.1",
   "description": "Gets the most recent modified file on a dir",
   "license": "MIT",
-  "author": {
-    "name": "Mauricio Poppe"
-  },
+  "author": "Mauricio Poppe (https://mauriciopoppe.com)",
   "main": "dist/index.js",
   "jsnext:main": "src/index.js",
   "keywords": [
@@ -13,14 +11,10 @@
     "file",
     "recently modified"
   ],
-  "repository": "maurizzzio/recently-modified-files",
+  "repository": "mauriciopoppe/recently-modified-files",
   "scripts": {
-    "clean": "rimraf dist/ && mkdirp dist/",
-    "lint": "standard",
-    "prebuild": "npm run clean -s && npm run lint -s",
     "build": "babel src/index.js --out-file dist/index.js",
     "build:watch": "npm run build -- --watch",
-    "preversion": "npm run build",
     "test": "ava",
     "test:watch": "npm test -- --watch",
     "coverage": "nyc npm test && nyc report --reporter=text-lcov > coverage.lcov && codecov"
